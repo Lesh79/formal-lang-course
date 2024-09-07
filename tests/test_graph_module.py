@@ -3,17 +3,17 @@ from pathlib import Path
 
 import pytest
 
-from project.graph_module import Graph
+from project.graph_module import load_graph, graph_info, create_labeled_graph
 
 
 class TestGraph:
     def test_name_graph(self):
         with pytest.raises(FileNotFoundError):
-            Graph.load_graph("Lesh79")
+            load_graph("Lesh79")
 
     def test_graph_info_bzip(self):
         graph_info_bzip = (632, 556, ["d", "a"])
-        assert Graph.graph_info("bzip") == graph_info_bzip
+        assert graph_info("bzip") == graph_info_bzip
 
     def test_graph_info_pizza(self):
         graph_info_pizza = (
@@ -45,11 +45,11 @@ class TestGraph:
                 "oneOf",
             ],
         )
-        assert Graph.graph_info("pizza") == graph_info_pizza
+        assert graph_info("pizza") == graph_info_pizza
 
     def test_create_labeled_graph(self):
         path_to_file: str = "test_create.dot"
-        Graph.create_labeled_graph(5, 12, ("11", "12"), path_to_file)
+        create_labeled_graph(5, 12, ("11", "12"), path_to_file)
         assert (
             open(path_to_file, "r").read()
             == open(Path("tests/test_create_graph_expected.dot"), "r").read()
