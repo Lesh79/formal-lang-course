@@ -25,7 +25,6 @@ class TestDFA:
         assert dfa.is_equivalent_to(dfa_minimize)
 
     def test_build_from_loaded_graph(self):
-
         graph = load_graph("wc")
         nfa = graph_to_nfa(graph)
 
