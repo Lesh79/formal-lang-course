@@ -17,10 +17,10 @@ def graph_to_nfa(
 ) -> NondeterministicFiniteAutomaton:
     nfa = NondeterministicFiniteAutomaton.from_networkx(graph)
 
-    if start_states is None:
+    if not start_states:
         start_states = graph.nodes
 
-    if final_states is None:
+    if not final_states:
         final_states = graph.nodes
 
     for state in start_states:

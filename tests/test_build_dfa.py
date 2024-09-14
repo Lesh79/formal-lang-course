@@ -1,6 +1,6 @@
 from pyformlang.finite_automaton import NondeterministicFiniteAutomaton
 
-from project.fa_module import regex_to_dfa, graph_to_nfa
+from project.task2 import regex_to_dfa, graph_to_nfa
 from project.graph_module import load_graph
 
 
@@ -25,7 +25,6 @@ class TestDFA:
         assert dfa.is_equivalent_to(dfa_minimize)
 
     def test_build_from_loaded_graph(self):
-        print("build dfa from loaded graph")
 
         graph = load_graph("wc")
         nfa = graph_to_nfa(graph)
