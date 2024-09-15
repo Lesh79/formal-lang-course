@@ -1,6 +1,6 @@
 from pyformlang.finite_automaton import NondeterministicFiniteAutomaton
 
-from project.task2 import regex_to_dfa, graph_to_nfa
+from project.fa_module import regex_to_dfa, graph_to_nfa
 from project.graph_module import load_graph
 
 

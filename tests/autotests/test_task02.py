@@ -14,7 +14,7 @@ from grammars_constants import REGEXES
 
 # Fix import statements in try block to run tests
 try:
-    from project.task2 import regex_to_dfa, graph_to_nfa
+    from project.fa_module import regex_to_dfa, graph_to_nfa
 except ImportError:
     pytestmark = pytest.mark.skip("Task 2 is not ready to test!")
 
@@ -30,7 +30,7 @@ class TestRegexToDfa:
             all_word_parts = list(regex_words)
             word_parts = random.choice(all_word_parts)
         else:
-            index = random.randint(0, 2**9)
+            index = random.randint(0, 2 ** 9)
             word_parts = next(itertools.islice(regex_words, index, None))
 
         word = map(lambda x: x.value, word_parts)
@@ -45,8 +45,8 @@ class TestRegexToDfa:
 
 class TestGraphToNfa:
     def test_random_start_and_final(
-        self,
-        graph: MultiDiGraph,
+            self,
+            graph: MultiDiGraph,
     ) -> None:
         copy_graph = graph.copy()
         start_nodes, final_nodes = generate_rnd_start_and_final(graph)

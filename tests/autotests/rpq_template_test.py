@@ -6,7 +6,7 @@ from pyformlang.rsa import RecursiveAutomaton
 from typing import Callable, Iterable
 
 try:
-    from project.task2 import graph_to_nfa, regex_to_dfa
+    from project.fa_module import graph_to_nfa, regex_to_dfa
     from project.task3 import AdjacencyMatrixFA
     from project.task4 import ms_bfs_based_rpq
 except ImportError:
