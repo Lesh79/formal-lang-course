@@ -1,5 +1,5 @@
 from copy import deepcopy
-from helper import generate_rnd_start_and_final, rpq_dict_to_set
+from helper import generate_rnd_start_and_final
 from networkx import MultiDiGraph
 from pyformlang.cfg import CFG
 from pyformlang.rsa import RecursiveAutomaton
@@ -27,12 +27,10 @@ def rpq_cfpq_test(
         cfpq: set[tuple[int, int]] = function(
             cf_gram, deepcopy(graph), start_nodes, final_nodes
         )
-        rpq: set[tuple[int, int]] = rpq_dict_to_set(
-            ms_bfs_based_rpq(
-                AdjacencyMatrixFA(graph_to_nfa(graph, start_nodes, final_nodes)),
-                AdjacencyMatrixFA(regex_to_dfa(regex_str)),
-            )
+        rpq: set[tuple[int, int]] = ms_bfs_based_rpq(
+            regex_str, deepcopy(graph), start_nodes, final_nodes
         )
+
         assert cfpq == rpq
 
 
