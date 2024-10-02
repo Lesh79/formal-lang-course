@@ -47,8 +47,12 @@ class AdjacencyMatrixFA:
 
         self._state_index_mapping = self._index_elements(nfa.states)
         self._total_states = len(nfa.states)
-        self._initial_states = set(self._state_index_mapping[i] for i in nfa.start_states)
-        self._accept_states = set(self._state_index_mapping[i] for i in nfa.final_states)
+        self._initial_states = set(
+            self._state_index_mapping[i] for i in nfa.start_states
+        )
+        self._accept_states = set(
+            self._state_index_mapping[i] for i in nfa.final_states
+        )
 
         symbol_matrices = self._build_symbol_matrices(nfa)
 
@@ -90,7 +94,9 @@ class AdjacencyMatrixFA:
         for k in range(num_nodes):
             for i in range(num_nodes):
                 for j in range(num_nodes):
-                    mat_dense[i, j] = mat_dense[i, j] or (mat_dense[i, k] and mat_dense[k, j])
+                    mat_dense[i, j] = mat_dense[i, j] or (
+                        mat_dense[i, k] and mat_dense[k, j]
+                    )
         return mat_dense
 
     def transitive_closure(self) -> np.ndarray:
@@ -128,7 +134,7 @@ class AdjacencyMatrixFA:
 
 
 def intersect_automata(
-        automaton1: AdjacencyMatrixFA, automaton2: AdjacencyMatrixFA
+    automaton1: AdjacencyMatrixFA, automaton2: AdjacencyMatrixFA
 ) -> AdjacencyMatrixFA:
     new_instance = AdjacencyMatrixFA(None)
     common_symbols = [
