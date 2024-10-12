@@ -89,7 +89,7 @@ class AdjacencyMatrixFA:
 
     @staticmethod
     def _compute_closure(matrix: matrix_type):
-        mat_dense = matrix.todense()
+        mat_dense = matrix.tolil()
         num_nodes = mat_dense.shape[0]
         for k in range(num_nodes):
             for i in range(num_nodes):
