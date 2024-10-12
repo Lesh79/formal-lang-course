@@ -1,6 +1,6 @@
 from pyformlang.finite_automaton import Symbol
 
-from project.task3 import AdjacencyMatrixFA
+from project.AdjacencyMatrixFA import AdjacencyMatrixFA
 from project.task2 import regex_to_dfa
 
 
