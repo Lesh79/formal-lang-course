@@ -7,7 +7,6 @@ from scipy.sparse import (
     spmatrix,
     block_diag,
     identity,
-    lil_matrix,
     block_array,
     csr_matrix,
 )
@@ -23,7 +22,7 @@ def init_front(adj_dfa: AdjacencyMatrixFA, adj_nfa: AdjacencyMatrixFA) -> spmatr
 
     vectors = []
     for nfa_state_num in range(len(start_states)):
-        right_vector = lil_matrix((change, adj_nfa.states_number), dtype=bool)
+        right_vector = adj_nfa.matrix_type((change, adj_nfa.states_number), dtype=bool)
         for i in adj_dfa.start_states:
             right_vector[i, start_states[nfa_state_num]] = True
         vectors.append(block_array([[left_vector, right_vector]]))
@@ -32,12 +31,16 @@ def init_front(adj_dfa: AdjacencyMatrixFA, adj_nfa: AdjacencyMatrixFA) -> spmatr
 
 
 def ms_bfs_based_rpq(
-    regex: str, graph: MultiDiGraph, start_nodes: set[int], final_nodes: set[int]
+    regex: str,
+    graph: MultiDiGraph,
+    start_nodes: set[int],
+    final_nodes: set[int],
+    matrix_type: type(spmatrix) = csr_matrix,
 ) -> set[tuple[int, int]]:
     regex_dfa = regex_to_dfa(regex)
-    adj_dfa = AdjacencyMatrixFA(regex_dfa)
+    adj_dfa = AdjacencyMatrixFA(regex_dfa, matrix_type=matrix_type)
     graph_nfa = graph_to_nfa(graph, start_nodes, final_nodes)
-    adj_nfa = AdjacencyMatrixFA(graph_nfa)
+    adj_nfa = AdjacencyMatrixFA(graph_nfa, matrix_type=matrix_type)
 
     change = adj_dfa.states_number
     start_states = list(adj_nfa.start_states)
@@ -52,13 +55,13 @@ def ms_bfs_based_rpq(
 
     init_front_matrix = init_front(adj_dfa, adj_nfa)
     front_left = init_front_matrix[:, :change]
-    front_right = lil_matrix(init_front_matrix[:, change:], dtype=bool)
-    visited = csr_matrix(front_right, dtype=bool)
+    front_right = matrix_type(init_front_matrix[:, change:], dtype=bool)
+    visited = matrix_type(front_right, dtype=bool)
 
-    def update_front(front_right_to_update: spmatrix) -> lil_matrix:
-        def front_mul_matrix(cur_front, matrix) -> lil_matrix:
-            mul = csr_matrix(cur_front @ matrix)
-            diag_front_right = lil_matrix(front_right_to_update.shape, dtype=bool)
+    def update_front(front_right_to_update: spmatrix) -> spmatrix:
+        def front_mul_matrix(cur_front, matrix) -> spmatrix:
+            mul = matrix_type(cur_front @ matrix)
+            diag_front_right = matrix_type(front_right_to_update.shape, dtype=bool)
             for i, j in zip(*mul[:, :change].nonzero()):
                 diag_front_right[i // change * change + j, :] += mul[i, change:]
             return diag_front_right
@@ -67,7 +70,7 @@ def ms_bfs_based_rpq(
         updated_front = reduce(
             lambda vector, matrix: vector + front_mul_matrix(front, matrix),
             combined_matrices.values(),
-            lil_matrix(front_right.shape, dtype=bool),
+            matrix_type(front_right.shape, dtype=bool),
         )
 
         return updated_front
