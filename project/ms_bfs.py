@@ -12,7 +12,7 @@ from scipy.sparse import (
 )
 
 from project.fa_module import regex_to_dfa, graph_to_nfa
-from project.task3 import AdjacencyMatrixFA
+from project.AdjacencyMatrixFA import AdjacencyMatrixFA
 
 
 def init_front(adj_dfa: AdjacencyMatrixFA, adj_nfa: AdjacencyMatrixFA) -> spmatrix:
