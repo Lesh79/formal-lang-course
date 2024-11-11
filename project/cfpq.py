@@ -83,7 +83,6 @@ def tensor_based_cfpq(
         graph_to_nfa(graph, start_nodes, final_nodes), matrix_type=matrix_type
     )
 
-    # Ensure matrices are available for each nonterminal
     for nonterminal in rsm.boxes:
         for mat in (bool_graph, bool_rsm):
             if nonterminal not in mat.adj_matrices:
