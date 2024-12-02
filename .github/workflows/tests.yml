@@ -16,6 +16,12 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
       - name: Install rye
         uses: eifinger/setup-rye@v4
         with:
@@ -23,6 +29,13 @@ jobs:
 
       - name: Sync dependencies
         run: rye sync
+
+      - name: Set up ANTLR
+        run: pip install antlr4-tools
+
+      - name: Generate parser
+        working-directory: project/interpret
+        run: antlr4 GraphQueryLanguage.g4 -Dlanguage=Python3
 
       - name: Run tests
         run: python scripts/run_tests.py
